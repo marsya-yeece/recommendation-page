@@ -1,0 +1,63 @@
+body{
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+header{
+    padding: 6px 60px;
+    display: flex;
+
+    background-color: black;
+}
+
+nav{
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    
+    justify-content:space-between;
+    align-items: center;
+}
+
+.logo{
+    margin: 0;
+    float: left;
+
+    font-size:x-large;
+    font-weight: 700;
+
+    color: white;
+}
+
+.header-right{
+    float: right;
+}
+
+ul{
+    display: flex;
+    gap: 20px;
+
+    list-style: none;
+}
+
+a{
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+}
+
+/* Hero */
+.hero-section{
+    background-color: purple;
+}
+
+/* Recommendation */
+.recommendation-section{
+    background-color: pink;
+}
+
+/* Form */
+.form-section{
+    background-color: orange;
+}
