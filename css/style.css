@@ -142,6 +142,16 @@ a{
     z-index: -1;
 }
 
+#hero-image-container{
+    position: absolute;
+    z-index: -1;
+}
+
+#hero-image-container-2{
+    position: absolute;
+    z-index: -2;
+}
+
 /* Recommendation */
 .recommendation-section{
     display: flex;

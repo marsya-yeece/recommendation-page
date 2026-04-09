@@ -5,17 +5,16 @@ const heroImageCollections = [
 ];
 
 let index = 0;
-const img = document.getElementById('hero-image-container');
+const imgHero1 = document.getElementById('hero-image-container');
+const imgHero2 = document.getElementById('hero-image-container-2');
 
-function changingImage(){
+function changeImage(element){
     index = index + 1;
     if(index==heroImageCollections.length){
         index = 0;
     }
-    img.src = heroImageCollections[index];
+    element.src = heroImageCollections[index];
 }
-
-// setInterval(changingImage, 5000);
 
 function fadeOutAnimation(){
     document.getElementById('hero-image-container').style.animation="fadeOutAnimation 1s";
@@ -26,17 +25,45 @@ function fadeInAnimation(){
 }
 
 function changingImageAnimation(){
-    //fade in 1s
-    img.classList.remove('fade-out');
-    img.classList.add('fade-in');
+    //pseudocode
 
-    //wait 3s display img
+    //initial state: 
+    //img1 front img2 behind
+    //img1 img2 visible
 
-    //wait 4 secs after fade in + display, then do fade out 1s, wait 1s then change img
-    setTimeout(() =>{
-        //fade out
-        
-        //wait 1s, then change image
-    }, 4000);
+    //wait 3s
+    setTimeout(() => {
+        //crossfade: img1 fade out 1s
+        imgHero1.classList.add('fade-out');
+        console.log("img1 fade out")
+
+        setTimeout(() => {
+            //img1 change source
+            changeImage(imgHero1);
+            console.log("img1 change image")
+        },1000);
+
+        //wait 3s
+        setTimeout(() => {
+            //crossfade: img1 fade in 1s
+            imgHero1.classList.remove('fade-out');
+            imgHero1.classList.add('fade-in');
+            console.log("img2 fade out")
+
+            //img2 change source
+            setTimeout(() => {
+                //img2 change source
+                changeImage(imgHero2);
+                console.log("img2 change image")
+            },1000);
+
+        },3000);
+
+    },3000);
 
 }
+
+setInterval(() => {
+    changingImageAnimation();
+}, 8000);
+
