@@ -1,12 +1,19 @@
-const heroImageCollections = [
-    '/assets/img/Series/Queens Gambit/queens-gambit-1.jpg',
-    '/assets/img/K-Pop/ARTMS/artms-1.jpeg',
-    '/assets/img/Anime/AoT/aot-1.jpg'
-];
+const IMAGE_DISPLAY_DURATION = 5000;
+const FADE_ANIMATION_DURATION = 1000;
+const REMAINING_IMAGE_DISPLAY_DURATION = IMAGE_DISPLAY_DURATION-FADE_ANIMATION_DURATION;
 
 let index = 0;
 const imgHero1 = document.getElementById('hero-image-container');
 const imgHero2 = document.getElementById('hero-image-container-2');
+const img1 = document.getElementById('hero-image-1');
+const img2 = document.getElementById('hero-image-2');
+
+const heroImageCollections = [
+    '/assets/img/Series/Queens Gambit/queens-gambit-2.webp',
+    '/assets/img/K-Pop/ARTMS/artms-1.jpeg',
+    '/assets/img/Anime/AoT/aot-1.jpg',
+    '/assets/img/Anime/AoT/aot-2.jpg'
+];
 
 function changeImage(element){
     index = index + 1;
@@ -16,54 +23,60 @@ function changeImage(element){
     element.src = heroImageCollections[index];
 }
 
-function fadeOutAnimation(){
-    document.getElementById('hero-image-container').style.animation="fadeOutAnimation 1s";
+function fadeOut(element){
+    element.classList.add('fade-out');
+    element.classList.remove('fade-in');
 }
 
-function fadeInAnimation(){
-    document.getElementById('hero-image-container').style.animation="fadeInAnimation 1s";
+function fadeIn(element){
+    element.classList.remove('fade-out');
+    element.classList.add('fade-in');
 }
 
-function changingImageAnimation(){
-    //pseudocode
-
-    //initial state: 
-    //img1 front img2 behind
-    //img1 img2 visible
-
-    //wait 3s
-    setTimeout(() => {
-        //crossfade: img1 fade out 1s
-        imgHero1.classList.add('fade-out');
-        console.log("img1 fade out")
-
-        setTimeout(() => {
-            //img1 change source
-            changeImage(imgHero1);
-            console.log("img1 change image")
-        },1000);
-
-        //wait 3s
-        setTimeout(() => {
-            //crossfade: img1 fade in 1s
-            imgHero1.classList.remove('fade-out');
-            imgHero1.classList.add('fade-in');
-            console.log("img2 fade out")
-
-            //img2 change source
-            setTimeout(() => {
-                //img2 change source
-                changeImage(imgHero2);
-                console.log("img2 change image")
-            },1000);
-
-        },3000);
-
-    },3000);
-
+function slideOn(element){
+    element.classList.add('slide');
 }
 
-setInterval(() => {
+function slideOff(element){
+    element.classList.remove('slide');
+}
+
+function delay(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+let firstRun = true;
+async function changingImageAnimation(){
+
+    if(firstRun == true){
+        //fade to display img 1
+        slideOn(img1);
+        await delay(IMAGE_DISPLAY_DURATION);
+        fadeOut(imgHero1);
+        
+        console.log("firstRun true");
+    }
+    
+    console.log("firstRun is ", firstRun);
+
+    //fade to display img 2
+    slideOn(img2);
+    await delay(FADE_ANIMATION_DURATION);
+    slideOff(img1);
+    changeImage(img1);
+    await delay(REMAINING_IMAGE_DISPLAY_DURATION);
+    fadeIn(imgHero1);
+
+    //fade to display img 1
+    slideOn(img1);
+    await delay(FADE_ANIMATION_DURATION);
+    slideOff(img2);
+    changeImage(img2);
+    await delay(REMAINING_IMAGE_DISPLAY_DURATION);
+    fadeOut(imgHero1);
+
+    firstRun = false;
     changingImageAnimation();
-}, 8000);
+}
 
+changingImageAnimation();
