@@ -8,7 +8,10 @@ body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Header */
+/* ================================
+   HEADER SECTION
+================================ */
+
 header{
     padding: 0px 60px;
     display: flex;
@@ -58,7 +61,10 @@ a{
     /* background-color: grey; */
 }
 
-/* Hero */
+/* ================================
+   HERO SECTION
+================================ */
+
 .hero-section{
     position: relative;
     overflow: hidden;
@@ -74,6 +80,9 @@ a{
 
     justify-content: center;
     align-items: center;
+
+    /* text-shadow: 6px 6px black; */
+    text-shadow: black 1px 0 10px;
 
     flex-direction: column;
     z-index: 3;
@@ -116,6 +125,19 @@ a{
     line-height: 1.5;;
 
     font-size: 16px;
+    font-weight: 400;
+    z-index: 3;
+}
+
+#hero-image-slide-title{
+    position: absolute;
+    color: white;
+    margin: 5px;
+
+    right: 20px;
+    bottom: 20px;
+
+    font-size: 14px;
     font-weight: 400;
     z-index: 3;
 }
@@ -188,17 +210,25 @@ a{
     object-position: center;
 }
 
-/* Recommendation */
+/* ================================
+   RECOMMENDATION SECTION
+================================ */
 .recommendation-section{
     display: flex;
     height: 100vh;
     background-color: #4a0466;
 }
 
-/* Form */
+/* ================================
+   FORM SECTION
+================================ */
 .form-section{
     /* background-color: orange; */
 }
+
+/* ================================
+   ANIMATION SECTION
+================================ */
 
 @keyframes fadeInAnimation {
     from {opacity: 0;}

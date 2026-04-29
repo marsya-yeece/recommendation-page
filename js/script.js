@@ -1,29 +1,55 @@
+// ================================
+// HERO SECTION
+// ================================
+
 const IMAGE_DISPLAY_DURATION = 5000;
 const FADE_ANIMATION_DURATION = 1000;
 const REMAINING_IMAGE_DISPLAY_DURATION = IMAGE_DISPLAY_DURATION-FADE_ANIMATION_DURATION;
 
-let index = 0;
+const titleHero = document.getElementById('hero-image-slide-title');
 const imgHero1 = document.getElementById('hero-image-container');
 const imgHero2 = document.getElementById('hero-image-container-2');
 const img1 = document.getElementById('hero-image-1');
 const img2 = document.getElementById('hero-image-2');
 
-const heroImageCollections = [
-    '/assets/img/Series/Queens Gambit/queens-gambit-2.webp',
-    '/assets/img/K-Pop/ARTMS/artms-1.jpeg',
-    '/assets/img/Anime/AoT/aot-1.jpg',
-    '/assets/img/Anime/AoT/aot-2.jpg'
-];
+const heroImageSlides = [
+    { 
+        title: "Queen's Gambit",
+        image: "/assets/img/Series/Queens Gambit/queens-gambit-1.jpg"
+    },
+    { 
+        title: "ARTMS",
+        image: "/assets/img/K-Pop/ARTMS/artms-2.webp"
+    },
+    { 
+        title: "Attack on Titan",
+        image: "/assets/img/Anime/AoT/aot-2.jpg"
+    },
+    
+]
 
-function changeImage(element){
-    index = index + 1;
-    if(index==heroImageCollections.length){
-        index = 0;
+const heroTitleCollections = heroImageSlides.map(slide => slide.title);
+const heroImageCollections = heroImageSlides.map(slide => slide.image);
+
+let indexTitle = 0;
+function changeTitle(){
+    indexTitle = indexTitle + 1;
+    if(indexTitle==heroTitleCollections.length){
+        indexTitle = 0;
     }
-    element.src = heroImageCollections[index];
+    titleHero.textContent = heroTitleCollections[indexTitle];
 }
 
-function fadeOut(element){
+let indexImage = 0;
+function changeImage(element){
+    indexImage = indexImage + 1;
+    if(indexImage==heroImageCollections.length){
+        indexImage = 0;
+    }
+    element.src = heroImageCollections[indexImage];
+}
+
+function fadeOut(element){ 
     element.classList.add('fade-out');
     element.classList.remove('fade-in');
 }
@@ -45,38 +71,50 @@ function delay(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let firstRun = true;
-async function changingImageAnimation(){
-
-    if(firstRun == true){
-        //fade to display img 1
-        slideOn(img1);
-        await delay(IMAGE_DISPLAY_DURATION);
-        fadeOut(imgHero1);
-        
-        console.log("firstRun true");
-    }
-    
-    console.log("firstRun is ", firstRun);
-
-    //fade to display img 2
-    slideOn(img2);
-    await delay(FADE_ANIMATION_DURATION);
-    slideOff(img1);
-    changeImage(img1);
-    await delay(REMAINING_IMAGE_DISPLAY_DURATION);
-    fadeIn(imgHero1);
-
-    //fade to display img 1
-    slideOn(img1);
-    await delay(FADE_ANIMATION_DURATION);
-    slideOff(img2);
-    changeImage(img2);
-    await delay(REMAINING_IMAGE_DISPLAY_DURATION);
-    fadeOut(imgHero1);
-
-    firstRun = false;
-    changingImageAnimation();
+function fadeAndDisplay(element){
+     if(element==imgHero1){
+        fadeIn(imgHero1);
+     }else if(element==imgHero2){
+        fadeOut(imgHero1)
+     }else{
+        throw Error("Invalid element for display image function.");
+     }
 }
 
-changingImageAnimation();
+async function firstSlide() {
+    changeImage(img1);
+    changeImage(img2);
+    changeTitle();
+
+    slideOn(img1);
+    await delay(IMAGE_DISPLAY_DURATION);
+}
+
+let current = 0;
+const slides = [
+    { image: img1, container: imgHero1},
+    { image: img2, container: imgHero2}
+];
+async function nextSlide() {
+    let prev = current;
+    current = (current + 1) % slides.length
+
+    changeTitle();
+    slideOn(slides[current].image);
+    fadeAndDisplay(slides[current].container);
+    await delay(FADE_ANIMATION_DURATION);
+    slideOff(slides[prev].image);
+    changeImage(slides[prev].image);
+    await delay(REMAINING_IMAGE_DISPLAY_DURATION);
+}
+
+function main(){
+
+    firstSlide();
+    setInterval(() =>{
+        nextSlide();
+    },IMAGE_DISPLAY_DURATION);
+    
+}
+
+main();
